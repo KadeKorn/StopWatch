@@ -9,49 +9,53 @@ const millisecondsElement = document.querySelector('.timer__milliseconds');
 let intervalId = null;
 let elapsedTime = 0; // Time in milliseconds
 
-function startTimer() {
-    intervalId = setInterval(() => {
-      elapsedTime += 10; // Increment time
-      updateTimerDisplay(); // Update the timer display
-    }, 10);
-  }
-  
-  function startTimer() {
-  intervalId = setInterval(() => {
-    elapsedTime += 10; // Increment time
-    updateTimerDisplay(); // Update the timer display
-  }, 10);
-}
+
 
 function updateTimerDisplay() {
     const minutes = Math.floor(elapsedTime / 60000);
     const seconds = Math.floor((elapsedTime % 60000) / 1000);
     const milliseconds = elapsedTime % 1000;
-  
+    
+    setTimerDisplay(minutes, seconds, milliseconds);
+}
+
+function setTimerDisplay(minutes, seconds, milliseconds) {
     minutesElement.textContent = padWithZero(minutes, 2);
     secondsElement.textContent = padWithZero(seconds, 2);
     millisecondsElement.textContent = padWithZero(milliseconds, 3);
-  }
-  
-  function padWithZero(number, length) {
+}
+
+
+function padWithZero(number, length) {
     let str = '' + number;
     while (str.length < length) {
-      str = '0' + str;
+        str = '0' + str;
     }
     return str;
+}
+
+
+function startTimer() {
+    intervalId = setInterval(() => {
+      elapsedTime += 10; // Increment time
+      updateTimerDisplay(); // Update the timer display
+      startButton.disabled = true;  // Re-enable the start button
+
+    }, 10);
   }
-  
+
+
   function stopTimer() {
     clearInterval(intervalId);
+    startButton.disabled = false;  // Re-enable the start button
   }
   
   function resetTimer() {
     clearInterval(intervalId);
     elapsedTime = 0;
+    startButton.disabled = false;  // Re-enable the start button
 
-    minutesElement.textContent = "00";
-    secondsElement.textContent =  "00"
-    millisecondsElement.textContent = "000"
+    setTimerDisplay(0,0,0)
 
   }
   
